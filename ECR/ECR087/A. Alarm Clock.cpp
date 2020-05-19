@@ -14,6 +14,8 @@ using namespace std;
 #define debug(var) cout << "[" << #var << "]\n" << var << endl
 #define int long long
 typedef long long ll;
+#define double long double
+typedef double ld;
 const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
@@ -66,52 +68,29 @@ __attribute__((constructor)) void initial() {
 }
 #pragma endregion
 
-#pragma region slope_search
-const double Golden = 2.0 / (3.0 + sqrt(5));
-
-int f(int trial);
-int slope_search(int inc, int dec) {
-  bool isMax = inc < dec;
-  while (abs(dec - inc) > 1) {
-    int mid = (inc + dec) / 2;
-    (f(mid) - f(mid - 1) > 0 ? inc : dec) = mid;
-  }
-  return isMax ? inc : dec;
-}
-#pragma endregion
-
-int N, A, R, M;
-vector<int> h;
-
-int f(int H) {
-  int inc = 0;
-  int dec = 0;
-
-  int cost = 0;
-  rep(i, N) {
-    if (h[i] > H)
-      dec += h[i] - H;
-    else
-      inc += H - h[i];
-  }
-
-  if (M < A + R) {
-    int temp = min(inc, dec);
-    cost += M * temp;
-    inc -= temp, dec -= temp;
-  }
-  cost += inc * A + dec * R;
-  return cost;
-}
-
 signed main() {
-  cin >> N >> A >> R >> M;
-  h = vector<int>(N);
-  rep(i, N) {
-    cin >> h[i];
-  }
+  int t;
+  cin >> t;
 
-  int H = slope_search((int)1e+10, 0);
-  int ans = f(H);
-  cout << ans << endl;
+  while (t-- > 0) {
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+
+    a -= b;
+    if (a <= 0) {
+      cout << b << endl;
+      continue;
+    }
+
+    int cc = c - d;
+
+    if (cc <= 0) {
+      cout << -1 << '\n';
+      continue;
+    }
+
+    int temp = (a + cc - 1) / cc;
+    int ans = b + c * temp;
+    cout << ans << endl;
+  }
 }

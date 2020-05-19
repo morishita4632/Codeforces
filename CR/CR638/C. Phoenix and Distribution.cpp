@@ -14,11 +14,14 @@ using namespace std;
 #define debug(var) cout << "[" << #var << "]\n" << var << endl
 #define int long long
 typedef long long ll;
+#define double long double
+typedef double ld;
 const int INF = 1001001001001001001ll;
 const ll LINF = 1001001001001001001ll;
 const int MOD = 1000000007;
 const double EPS = 1e-9;
 
+const double PI = acos(-1.0);
 template <typename T>
 ostream& operator<<(ostream& s, const vector<T>& v) {
   int len = v.size();
@@ -59,59 +62,42 @@ inline bool chmax(T& a, T b) {
   return false;
 }
 
-__attribute__((constructor)) void initial() {
-  cin.tie(nullptr);
-  ios::sync_with_stdio(false);
-  cout << fixed << setprecision(15);
-}
 #pragma endregion
-
-#pragma region slope_search
-const double Golden = 2.0 / (3.0 + sqrt(5));
-
-int f(int trial);
-int slope_search(int inc, int dec) {
-  bool isMax = inc < dec;
-  while (abs(dec - inc) > 1) {
-    int mid = (inc + dec) / 2;
-    (f(mid) - f(mid - 1) > 0 ? inc : dec) = mid;
-  }
-  return isMax ? inc : dec;
-}
-#pragma endregion
-
-int N, A, R, M;
-vector<int> h;
-
-int f(int H) {
-  int inc = 0;
-  int dec = 0;
-
-  int cost = 0;
-  rep(i, N) {
-    if (h[i] > H)
-      dec += h[i] - H;
-    else
-      inc += H - h[i];
-  }
-
-  if (M < A + R) {
-    int temp = min(inc, dec);
-    cost += M * temp;
-    inc -= temp, dec -= temp;
-  }
-  cost += inc * A + dec * R;
-  return cost;
-}
 
 signed main() {
-  cin >> N >> A >> R >> M;
-  h = vector<int>(N);
-  rep(i, N) {
-    cin >> h[i];
-  }
+  int t;
+  cin >> t;
 
-  int H = slope_search((int)1e+10, 0);
-  int ans = f(H);
-  cout << ans << endl;
+  while (t-- > 0) {
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+
+    sort(all(s));
+    vector<string> a(k);
+    int ind = 0;
+    while (ind < k) {
+      a[ind].pb(s[ind]);
+      ind++;
+    }
+
+    if (a[0] != a[k - 1]) {
+      cout << a[k - 1] << endl;
+    } else {
+      if (s[ind] == s[n - 1]) {
+        while (ind < n) {
+          a[ind % k].pb(s[ind]);
+          ind++;
+        }
+        cout << a[0] << endl;
+      } else {
+        while (ind < n) {
+          a[0].pb(s[ind]);
+          ind++;
+        }
+        cout << a[0] << endl;
+      }
+    }
+  }
 }
